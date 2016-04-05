@@ -1,0 +1,28 @@
+<% obj.each do |i| %>
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="well well-lg">
+          <div class="article-title">
+            <%= link_to i.title, article_path(i) %>
+          </div>
+          <div class="article-body">
+            <%= truncate(i.description, length: 100) %>
+            <div class="article-meta-details">
+              <small>Created by: <%= i.user.username if i.user %>,
+                <%= time_ago_in_words(i.created_at) %> ago,
+                last updated: <%= time_ago_in_words(i.updated_at) %>
+              </small>
+            </div>
+          </div>
+          <% if logged_in? && (current_user == i.user || current_user.admin?) %>
+            <div class="article-actions">
+              <%= link_to "Edit", edit_article_path(i), class: "btn btn-xs btn-primary" %>
+              <%= link_to "Delete", article_path(i), method: :delete,
+                          data: {confirm: "Are you sure you want to delete article?"},
+                          class: "btn btn-xs btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
